@@ -1,9 +1,8 @@
 // First Non-Repeating Integer in an Array
 
 
-
 //Returns first unique integer from array
-class CheckFirstUnique {
+public class CheckFirstUnique {
     public static int findFirstUnique(int[] arr) {
       //Inside Inner Loop Check Each index of outerLoop If it's repeated in array
       //If it's not repeated then return this as first unique Integer

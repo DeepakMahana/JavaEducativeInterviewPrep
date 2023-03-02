@@ -1,3 +1,4 @@
+
 // Re-arrange Sorted Array in Max/Min Form
 
 /**
@@ -25,8 +26,7 @@ To get the final array, we simply divide each element by maxElem as done in the 
     The space complexity is constant.
 */
 
-
-class CheckMaxMin {
+public class CheckMaxMin {
 
     public static void maxMin(int[] arr) {
       int maxIdx = arr.length - 1;

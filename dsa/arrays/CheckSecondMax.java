@@ -1,6 +1,5 @@
 // Find Second Maximum Value in an Array
 
-
 class CheckSecondMax {
     //Returns second maximum value from given Array 
     public static int findSecondMaximum(int[] arr) {
