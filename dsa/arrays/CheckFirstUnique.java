@@ -1,6 +1,5 @@
 // First Non-Repeating Integer in an Array
 
-
 //Returns first unique integer from array
 public class CheckFirstUnique {
     public static int findFirstUnique(int[] arr) {
