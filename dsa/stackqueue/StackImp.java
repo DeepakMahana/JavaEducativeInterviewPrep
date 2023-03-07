@@ -1,6 +1,6 @@
 package dsa.stackqueue;
 
-class Stack <V> {
+class Stack<V> {
 
     private int maxSize;
     private int top;
