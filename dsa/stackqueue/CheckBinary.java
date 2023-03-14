@@ -1,4 +1,3 @@
-package dsa.stackqueue;
 
 class Queue<V> {
     private int maxSize;

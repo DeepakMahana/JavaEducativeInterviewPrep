@@ -1,5 +1,3 @@
-package dsa.stackqueue;
-
 //You can either divide array in two halves or start stacks at extreme ends.
 //We'll use the second technique to solve this problem.
 //Top of Stack 1 start from extreme left of array i.e top1 = 0;
