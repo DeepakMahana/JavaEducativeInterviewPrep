@@ -1,7 +1,6 @@
 package dsa.graphs;
 
-
-// DLL with Tail
+// DLL Impl
 class DoublyLinkedList<T> {
 
     //Node inner class for DLL
@@ -52,7 +51,7 @@ class DoublyLinkedList<T> {
     }
 
     public void insertAtEnd(T data) {
-        if(isEmpty()) {
+        if (isEmpty()) {
             insertAtHead(data);
             return;
         }
@@ -85,6 +84,7 @@ class DoublyLinkedList<T> {
     public void printListReverse() {
         if (isEmpty()) {
             System.out.println("List is Empty!");
+            return;
         }
 
         Node temp = tailNode;
@@ -96,6 +96,31 @@ class DoublyLinkedList<T> {
         }
 
         System.out.println(temp.data.toString() + " -> null");
+    }
+
+    public void deleteByValue(T data) {
+        //if empty then simply return
+        if (isEmpty())
+            return;
+
+        //Start from head node
+        Node currentNode = this.headNode;
+
+        if (currentNode.data.equals(data)) {
+            //data is at head so delete from head
+            deleteAtHead();
+            return;
+        }
+        //traverse the list searching for the data to delete
+        while (currentNode != null) {
+            //node to delete is found
+            if (data.equals(currentNode.data)) {
+                currentNode.prevNode.nextNode = currentNode.nextNode;
+                if (currentNode.nextNode != null)
+                    currentNode.nextNode.prevNode = currentNode.prevNode;
+            }
+            currentNode = currentNode.nextNode;
+        }
     }
 
     public void deleteAtHead() {
@@ -120,11 +145,12 @@ class DoublyLinkedList<T> {
             tailNode.nextNode = null;
         size--;
     }
+
 }
 
-// Graph Impl with Adjacency List
+// Graph Impl
 class Graph{
-    
+
     int vertices; //Total number of vertices in graph
     DoublyLinkedList<Integer> adjacencyList[]; //An array of linked lists to store adjacent vertices.
     
@@ -170,15 +196,68 @@ class Graph{
     }
 }
 
+// Detect Cycle in Graph
+public class CheckCycle {
 
-public class GraphImp {
-    public static void main( String args[] ) {
-        Graph g= new Graph(4);
-        g.addEdge(0, 1);
-        g.addEdge(0, 2);
-        g.addEdge(1, 3);
-        g.addEdge(2, 3);
+    public static boolean detectCycle(Graph g){
+        int num_of_vertices = g.vertices;
 
-        g.printGraph();
+        //Boolean Array to hold the history of visited nodes (by default-false)
+        boolean[] visited = new boolean [num_of_vertices];
+        //Holds a flag if the node is currently in Stack or not (by default- false)
+        boolean[] stackFlag = new boolean[num_of_vertices];
+
+        for (int i = 0; i < num_of_vertices; i++){
+            //Check cyclic on each node
+            if (cyclic(g, i, visited, stackFlag)){
+                return true;
+            }
+        }
+        return false;
     }
+
+    public static boolean cyclic(Graph g, int v, boolean[] visited, boolean[] stackFlag){
+        //if node is currently in stack that means we have found a cycle
+        if (stackFlag[v])
+            return true;
+
+        //if it is already visited (and not in Stack) then there is no cycle
+        if (visited[v])
+            return false;
+
+        visited[v] = true;
+        stackFlag[v] = true;
+
+        // check adjacency list of the node
+        DoublyLinkedList<Integer>.Node temp = null;
+        if (g.adjacencyList[v] != null)
+            temp = g.adjacencyList[v].headNode;
+
+        while (temp != null) {
+            //run cyclic function recursively on each outgowing path
+            if(cyclic(g, temp.data, visited, stackFlag)){
+                return true;
+            }
+            temp = temp.nextNode;
+        }
+        stackFlag[v] = false;
+
+        return false;
+    }
+    public static void main(String args[]) {
+        Graph g1 = new Graph(4);
+        g1.addEdge(0,1);
+        g1.addEdge(1,2);
+        g1.addEdge(1,3);
+        g1.addEdge(3,0);
+        g1.printGraph();
+        System.out.println(detectCycle(g1));
+
+        System.out.println();
+        Graph g2 = new Graph(3);
+        g2.addEdge(0,1);
+        g2.addEdge(1,2);
+        g2.printGraph();
+        System.out.println(detectCycle(g2));
+  }
 }
