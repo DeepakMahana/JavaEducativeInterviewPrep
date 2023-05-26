@@ -44,6 +44,8 @@ class Node {
 // BST Impl
 class BinarySearchTree {
 
+	static int  counter; //global count variable
+
 	private Node root;
 
 	public Node getRoot() {
@@ -282,7 +284,121 @@ class BinarySearchTree {
 		printTree(current.getRightChild());
 
 	}
+
+	// PreOrder Traversal
+	public static void preTraverse(Node root) {
+		if (root == null) return;
+		System.out.print(root.getData() + ",");
+    	preTraverse(root.getLeftChild());
+    	preTraverse(root.getRightChild());
+	}
+
+	// InOrder Traversal
+	public static void inTraverse(Node root) {
+		if (root == null) return;
+		inTraverse(root.getLeftChild());
+		System.out.print(root.getData() + ",");
+		inTraverse(root.getRightChild());
+	}
+
+	// PostOrder Traversal
+	public static void postTraverse(Node root) {
+		if (root == null) return;
+		postTraverse(root.getLeftChild());
+		postTraverse(root.getRightChild());
+		System.out.print(root.getData() + ",");
+
+	}
+
+	// Find Kth max 
+	// used as a wrapper for the recursive algorithm
+	public static int findKthMax(Node root, int k) {
+		counter = 0;
+		Node node = findKthMaxRecursive(root, k);
+		if(node != null)
+		  return node.getData();
+		return -1;
+	}
+
+	public static Node findKthMaxRecursive(Node root, int k) {
+		if(root==null){
+		  return null;
+		}
+		//Recursively reach the right-most node (which has the highest value)
+		Node node = findKthMaxRecursive(root.getRightChild(), k);
+	
+		if(counter != k){
+		  //Increment counter if kth element is not found
+		  counter++;
+		  node = root;
+		}
+		//Base condition reached as kth largest is found
+		if(counter == k){
+		  return node;
+		}else{
+		  //Traverse left child if kth element is not reached
+		  return findKthMaxRecursive(root.getLeftChild(), k);
+		}
+	}
+
+	// Iterative Function to print all ancestors of a given key 
+	public static String findAncestors(Node root, int k) { 
+		String result = ""; 
+		Node tempNode = root; 
+		while(tempNode != null && tempNode.getData() != k){ 
+			result = result + tempNode.getData() + ","; 
+			if(k <= tempNode.getData()){ 
+				tempNode = tempNode.getLeftChild(); 
+			} else{ 
+				tempNode = tempNode.getRightChild(); 
+			} 
+		} 
+		if(tempNode == null){ 
+			return ""; 
+		} 
+		return result; 
+	}
+
+	// Find height of BST / BT
+	public static int findHeight(Node root) {
+		//Base case, leaf nodes have 0 height
+		if (root == null) return -1;
+		else {
+		  return 1 + Math.max(findHeight(root.getLeftChild()),findHeight(root.getRightChild()));
+		  // Find Height of left subtree right subtree
+		  // Return greater height value of left or right subtree (plus 1)
+		}
+	}
+
+	// Find Nodes at "K" distance
+	public static String findKNodes(Node root, int k) {
+
+		StringBuilder result = new StringBuilder(); //StringBuilder is immutable
+		result = findK(root, k, result);
+	
+		return result.toString();
+	}
+
+	// Helper recursive function to traverse tree and append all the nodes 
+  	// at k distance into result StringBuilder
+	public static StringBuilder findK(Node root, int k, StringBuilder result) {
+
+		if (root == null) return null;
+
+		if (k == 0) {
+			result.append(root.getData() + ",");
+		}
+		else {
+		//Decrement k at each step till you reach at the leaf node 
+		// or when k == 0 then append the Node's data into result string
+		findK(root.getLeftChild(), k - 1, result);
+		findK(root.getRightChild(), k - 1, result);
+		}
+		return result;
+	}
+
 }
+
 
 public class BinarySearchTreeImpl {
 
